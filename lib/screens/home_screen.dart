@@ -93,16 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.favorite),
-              title: Text('Favorite Hotels'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FavoriteHotelScreen(hotels: [],)),
-                );
-              },
-            ),
-            ListTile(
               leading: Icon(Icons.newspaper),
               title: Text('News'),
               onTap: () {

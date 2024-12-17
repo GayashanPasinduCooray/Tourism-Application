@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:tourism_app_group_project/screens/hotel_detail_screen.dart';
 import 'package:tourism_app_group_project/model/hotel.dart';
-
+import 'package:tourism_app_group_project/db/db_helper.dart';
+import '../screens/hotel_detail_screen.dart';
 
 class HotelCard extends StatelessWidget {
   final Hotel hotel;
+  final VoidCallback onFavoriteToggle;
 
-  const HotelCard({Key? key, required this.hotel}) : super(key: key);
+  const HotelCard({
+    Key? key,
+    required this.hotel,
+    required this.onFavoriteToggle,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +29,6 @@ class HotelCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Display Hotel Image
             hotel.imageAssetPath.isNotEmpty
                 ? Image.asset(
               hotel.imageAssetPath,
@@ -35,7 +39,10 @@ class HotelCard extends StatelessWidget {
                 : SizedBox(
               height: 200,
               child: Center(
-                child: Text('No Image Available', style: TextStyle(color: Colors.grey)),
+                child: Text(
+                  'No Image Available',
+                  style: TextStyle(color: Colors.grey),
+                ),
               ),
             ),
             Padding(
@@ -62,32 +69,6 @@ class HotelCard extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                hotel.description,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 14),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HotelDetailsScreen(hotel: hotel),
-                      ),
-                    );
-                  },
-                  child: Text('View Details'),
-                ),
-              ),
-            ),
             Align(
               alignment: Alignment.centerRight,
               child: IconButton(
@@ -95,8 +76,15 @@ class HotelCard extends StatelessWidget {
                   hotel.isFavorite ? Icons.favorite : Icons.favorite_border,
                   color: hotel.isFavorite ? Colors.red : null,
                 ),
-                onPressed: () {
-                  // TODO: Add logic to toggle favorite state.
+                onPressed: () async {
+                  if (hotel.isFavorite) {
+                    await DBHelper.removeFavorite(hotel.name);
+                  } else {
+                    await DBHelper.addFavorite(hotel);
+                  }
+
+                  hotel.isFavorite = !hotel.isFavorite;
+                  onFavoriteToggle();
                 },
               ),
             ),

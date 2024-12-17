@@ -1,26 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:tourism_app_group_project/db/db_helper.dart';
+import 'package:tourism_app_group_project/widgets/hotel_card.dart';
 import 'package:tourism_app_group_project/model/hotel.dart';
-import '../widgets/hotel_card.dart';
 
-class FavoriteHotelScreen extends StatelessWidget {
-  final List<Hotel> hotels;
+class FavoriteHotelScreen extends StatefulWidget {
+  @override
+  _FavoriteHotelScreenState createState() => _FavoriteHotelScreenState();
+}
 
-  const FavoriteHotelScreen({Key? key, required this.hotels}) : super(key: key);
+class _FavoriteHotelScreenState extends State<FavoriteHotelScreen> {
+  List<Hotel> favoriteHotels = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadFavorites();
+  }
+
+  Future<void> loadFavorites() async {
+    final favorites = await DBHelper.getFavorites();
+    setState(() {
+      favoriteHotels = favorites;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final favoriteHotels = hotels.where((hotel) => hotel.isFavorite).toList();
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Favorite Hotels'),
       ),
       body: favoriteHotels.isEmpty
-          ? Center(child: Text('No favorite hotels yet.'))
+          ? Center(child: Text('No favorite hotels yet!'))
           : ListView.builder(
         itemCount: favoriteHotels.length,
         itemBuilder: (context, index) {
-          return HotelCard(hotel: favoriteHotels[index]);
+          return HotelCard(
+            hotel: favoriteHotels[index],
+            onFavoriteToggle: () => loadFavorites(),
+          );
         },
       ),
     );

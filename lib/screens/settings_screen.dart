@@ -25,7 +25,7 @@ class SettingsScreen extends StatelessWidget {
             onTap: () {},
           ),
           ListTile(
-            title: Text('Theme'),
+            title: Text('Dark Mode'),
             trailing: Icon(Icons.color_lens),
             onTap: () {
               _changeTheme(context);

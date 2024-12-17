@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:tourism_app_group_project/model/hotel.dart';
-
+import 'package:url_launcher/url_launcher.dart'; // Import the url_launcher package
 
 class HotelDetailsScreen extends StatelessWidget {
   final Hotel hotel;
 
   const HotelDetailsScreen({Key? key, required this.hotel}) : super(key: key);
+
+  // Function to launch Google Maps with the hotel's name
+  Future<void> _launchGoogleMaps(String name) async {
+    final Uri googleMapsUrl = Uri.parse("https://www.google.com/maps/search/?api=1&query=$name");
+    if (await canLaunchUrl(googleMapsUrl)) {
+      await launchUrl(googleMapsUrl); // Open Google Maps with the hotel name
+    } else {
+      throw 'Could not open Google Maps for $name';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,23 +75,15 @@ class HotelDetailsScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 16, height: 1.5),
                   ),
                   SizedBox(height: 16),
-                  // Favorite Button
+                  // View on Google Maps Button
                   Center(
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        // Add logic for favorite action
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                                hotel.isFavorite ? 'Removed from favorites' : 'Added to favorites'),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
+                        // Call the method to search hotel name on Google Maps
+                        _launchGoogleMaps(hotel.name);
                       },
-                      icon: Icon(
-                        hotel.isFavorite ? Icons.favorite : Icons.favorite_border,
-                      ),
-                      label: Text(hotel.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'),
+                      icon: Icon(Icons.map),
+                      label: Text('View on Google Maps'),
                     ),
                   ),
                 ],
