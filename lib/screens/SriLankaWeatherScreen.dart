@@ -47,6 +47,23 @@ class _SriLankaWeatherScreenState extends State<SriLankaWeatherScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(
+          'Sri Lanka Weather - $selectedCity',
+          style: GoogleFonts.poppins(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      extendBodyBehindAppBar: true,
       body: FutureBuilder<Map<String, dynamic>>(
         future: weatherData,
         builder: (context, snapshot) {
@@ -79,16 +96,8 @@ class _SriLankaWeatherScreenState extends State<SriLankaWeatherScreen> {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(
-                            'Sri Lanka Weather',
-                            style: GoogleFonts.poppins(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
                           DropdownButton<String>(
                             value: selectedCity,
                             onChanged: (newCity) {

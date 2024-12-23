@@ -253,6 +253,59 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
             ),
+            // Quick Access Section
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 18.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Quick Access',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: isDarkMode ? Colors.white : Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      QuickAccessItem(
+                        icon: Icons.place,
+                        label: 'Famous Places',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => FamousPlacesScreen()),
+                          );
+                        },
+                      ),
+                      QuickAccessItem(
+                        icon: Icons.cloud,
+                        label: 'Weather',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => SriLankaWeatherScreen()),
+                          );
+                        },
+                      ),
+                      QuickAccessItem(
+                        icon: Icons.newspaper,
+                        label: 'News',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => NewsScreen()),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
             // Section: Explore Famous Places
             Padding(
               padding:
@@ -370,6 +423,43 @@ class PlaceCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+class QuickAccessItem extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Function onTap;
+
+  QuickAccessItem({required this.icon, required this.label, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    return GestureDetector(
+      onTap: () => onTap(),
+      child: Column(
+        children: [
+          CircleAvatar(
+            backgroundColor: isDarkMode ? Colors.white : Colors.blueAccent,
+            radius: 30,
+            child: Icon(
+              icon,
+              color: isDarkMode ? Colors.black : Colors.white,
+              size: 30,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 14,
+              color: isDarkMode ? Colors.white : Colors.black,
+            ),
+          ),
+        ],
       ),
     );
   }
