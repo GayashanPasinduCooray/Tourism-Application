@@ -1,8 +1,8 @@
 import '../model/place.dart';
+import '../db/db_helper_places.dart'; // Updated DB helper import
 
 class PlacesProvider {
-  List<Place> getFamousPlaces() {
-    return [
+  List<Place> _famousPlaces = [
       Place(
         name: 'Sigiriya',
         description: '''Sigiriya, also known as Lion's Rock, is an ancient rock fortress located in the central Matale District of Sri Lanka. It is one of the island's most iconic landmarks and a UNESCO World Heritage Site. Rising 200 meters above the surrounding plains, Sigiriya offers stunning panoramic views of the lush landscape. 
@@ -60,5 +60,28 @@ Horton Plains is home to various species of wildlife, including endemic bird spe
         imageUrl: 'assets/images/places/horton_plains.jpg',
       ),
     ];
+
+  Future<void> loadPlaces() async {
+    final favoriteNames = await DBHelperPlaces.getFavorites(); // Updated DB helper method
+    for (var place in _famousPlaces) {
+      place.isFavorite = favoriteNames.contains(place.name);
+    }
+  }
+
+  List<Place> getFamousPlaces() {
+    return [..._famousPlaces];
+  }
+
+  void toggleFavorite(Place place) {
+    place.isFavorite = !place.isFavorite;
+    if (place.isFavorite) {
+      DBHelperPlaces.addFavorite(place); // Updated DB helper method
+    } else {
+      DBHelperPlaces.removeFavorite(place.name); // Updated DB helper method
+    }
+  }
+
+  List<Place> getFavoritePlaces() {
+    return _famousPlaces.where((place) => place.isFavorite).toList();
   }
 }

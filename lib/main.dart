@@ -5,6 +5,7 @@ import 'providers/ThemeNotifier.dart';
 import 'screens/home_screen.dart';
 import 'screens/settings_screen.dart';
 import 'utils/constants.dart';
+import 'providers/news_provider.dart'; // Import NewsProvider
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,8 +24,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ThemeNotifier()..setTheme(initialTheme),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => ThemeNotifier()..setTheme(initialTheme), // Provide ThemeNotifier
+        ),
+        ChangeNotifierProvider(
+          create: (context) => NewsProvider(), // Provide NewsProvider to the app
+        ),
+      ],
       child: Consumer<ThemeNotifier>(
         builder: (context, themeNotifier, child) {
           return MaterialApp(

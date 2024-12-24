@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tourism_app_group_project/Services/currency_service.dart';
+import 'package:tourism_app_group_project/providers/ThemeNotifier.dart';
 import 'package:tourism_app_group_project/screens/favorite_hotel_screen.dart';
 import 'package:tourism_app_group_project/screens/hotel_list_screen.dart';
 import 'SriLankaWeatherScreen.dart';
@@ -44,17 +46,23 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+    Color textColor = themeNotifier.listTileTextColor;
+    Color iconColor = themeNotifier.listTileIconColor;
 
     return Scaffold(
       appBar: AppBar(
+
         title: Text(
           'Sri Lanka Tourism',
           style: TextStyle(fontSize: 24),
         ),
-        backgroundColor: isDarkMode ? Colors.grey[850] : Colors.blueAccent,
+        backgroundColor: themeNotifier.appBarColor,
+
       ),
       drawer: Drawer(
         child: ListView(
@@ -62,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: isDarkMode ? Colors.grey[850] : Colors.blueAccent,
+                  color: themeNotifier.drawerHeaderColor,
               ),
               child: Text(
                 'Travel App Menu',
@@ -73,8 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.place),
-              title: Text('Famous Places'),
+              leading: Icon(Icons.place, color: iconColor),
+              title: Text('Famous Places', style: TextStyle(color: textColor)),
               onTap: () {
                 Navigator.push(
                   context,
@@ -83,8 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.hotel),
-              title: Text('Hotels'),
+              leading: Icon(Icons.hotel, color: iconColor),
+              title: Text('Hotels', style: TextStyle(color: textColor)),
               onTap: () {
                 Navigator.push(
                   context,
@@ -93,8 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.newspaper),
-              title: Text('News'),
+              leading: Icon(Icons.newspaper, color: iconColor),
+              title: Text('News', style: TextStyle(color: textColor)),
               onTap: () {
                 Navigator.push(
                   context,
@@ -103,8 +111,8 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.cloud),
-              title: Text('Sri Lanka Weather'),
+              leading: Icon(Icons.cloud, color: iconColor),
+              title: Text('Sri Lanka Weather', style: TextStyle(color: textColor)),
               onTap: () {
                 Navigator.push(
                   context,
@@ -113,8 +121,8 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
+              leading: Icon(Icons.settings, color: iconColor),
+              title: Text('Settings', style: TextStyle(color: textColor)),
               onTap: () {
                 Navigator.push(
                   context,
